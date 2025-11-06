@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Contact Form - Enhanced</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+      background: #f5f5f5;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 1.5rem;
+    }
+
+    form-group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    label {
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      color: #1f2937;
+      font-size: 1rem;
+    }
+
+    input,
+    textarea {
+      padding: 0.75rem;
+      border: 2px solid #ddd;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-family: inherit;
+      transition: all 0.2s ease;
+    }
+
+    input:focus,
+    textarea:focus {
+      outline: 3px solid #93c5fd;
+      outline-offset: 2px;
+      border-color: #2563eb;
+    }
+
+    input:focus-visible,
+    textarea:focus-visible {
+      outline: 3px solid #93c5fd;
+      outline-offset: 2px;
+    }
+
+    input.error,
+    textarea.error {
+      border-color: #ef4444;
+      background-color: #fef2f2;
+      animation: flash 0.3s ease;
+    }
+
+    @keyframes flash {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-4px); }
+      75% { transform: translateX(4px); }
+    }
+
+    input.valid,
+    textarea.valid {
+      border-color: #22c55e;
+      background-color: #f0fdf4;
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .required-indicator {
+      color: #dc2626;
+      margin-left: 0.25rem;
+      font-weight: 600;
+    }
+
+    ::placeholder {
+      color: #9ca3af;
+      opacity: 1;
+    }
+
+    .char-counter {
+      font-size: 0.875rem;
+      color: #6b7280;
+      margin-top: 0.5rem;
+      text-align: right;
+    }
+
+    .char-counter.warning {
+      color: #f59e0b;
+      font-weight: 600;
+    }
+
+    .char-counter.error {
+      color: #ef4444;
+      font-weight: 600;
+    }
+
+    button {
+      background: #2563eb;
+      color: white;
+      padding: 0.75rem 2rem;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    button:hover {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
+    }
+
+    button:focus {
+      outline: 3px solid #93c5fd;
+      outline-offset: 2px;
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    output {
+      display: block;
+      border-radius: 4px;
+      margin-top: 1rem;
+      min-height: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    output:empty {
+      padding: 0;
+      margin: 0;
+      border: none;
+    }
+
+    #error-output:not(:empty) {
+      padding: 1rem;
+      background: #fee;
+      border: 1px solid #fcc;
+      color: #c33;
+      font-weight: 500;
+    }
+
+    #info-output:not(:empty) {
+      padding: 1rem;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1e40af;
+      font-weight: 500;
+    }
+
+    output.fade-out {
+      opacity: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Contact Form - Enhanced</h1>
+
+    <form action="https://httpbin.org/post" method="POST" id="contactForm" novalidate>
+      <input type="hidden" name="possible_bot" value="true">
+      <input type="hidden" name="form-errors" id="formErrorsField" value="">
+
+      <form-group>
+        <label for="name">Name<span class="required-indicator">*</span></label>
+        <input 
+          type="text" 
+          id="name" 
+          name="name" 
+          required
+          data-pattern="^[A-Za-z\s]+$"
+          placeholder="Enter your full name">
+      </form-group>
+
+      <form-group>
+        <label for="email">Email<span class="required-indicator">*</span></label>
+        <input 
+          type="email" 
+          id="email" 
+          name="email" 
+          required
+          placeholder="your.email@example.com">
+      </form-group>
+
+      <form-group>
+        <label for="comments">Comments<span class="required-indicator">*</span></label>
+        <textarea 
+          id="comments" 
+          name="comments" 
+          required
+          data-maxlength="500"
+          data-pattern="^[A-Za-z0-9\s.,!?'\-]+$"
+          placeholder="Enter your message (max 500 characters)"></textarea>
+        <div class="char-counter" id="charCounter">500 characters remaining</div>
+      </form-group>
+
+      <button type="submit">Submit</button>
+
+      <output id="error-output" aria-live="polite"></output>
+      <output id="info-output" aria-live="polite"></output>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('contactForm');
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const commentsInput = document.getElementById('comments');
+    const charCounter = document.getElementById('charCounter');
+    const errorOutput = document.getElementById('error-output');
+    const infoOutput = document.getElementById('info-output');
+    const formErrorsField = document.getElementById('formErrorsField');
+    
+    const formErrors = [];
+
+    function showMessage(outputEl, message, fadeTime = 3000) {
+      outputEl.textContent = message;
+      outputEl.classList.remove('fade-out');
+      
+      if (fadeTime > 0) {
+        setTimeout(() => {
+          outputEl.classList.add('fade-out');
+          setTimeout(() => {
+            outputEl.textContent = '';
+            outputEl.classList.remove('fade-out');
+          }, 300);
+        }, fadeTime);
+      }
+    }
+
+    function flashField(field) {
+      field.classList.remove('error');
+      void field.offsetWidth;
+      field.classList.add('error');
+      
+      setTimeout(() => {
+        field.classList.remove('error');
+      }, 300);
+    }
+
+    function validatePattern(field, value) {
+      const pattern = field.dataset.pattern;
+      if (!pattern) return true;
+      const regex = new RegExp(pattern);
+      return regex.test(value);
+    }
+
+    function maskInput(field, event) {
+      if (event.key === 'Backspace' || event.key === 'Delete' || 
+          event.key === 'Tab' || event.key === 'Enter' || 
+          event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+        return;
+      }
+
+      const pattern = field.dataset.pattern;
+      if (!pattern) return;
+
+      const testValue = field.value + event.key;
+      const regex = new RegExp(pattern);
+      
+      if (!regex.test(testValue)) {
+        event.preventDefault();
+        flashField(field);
+        
+        let fieldName = field.name.charAt(0).toUpperCase() + field.name.slice(1);
+        let allowedChars = '';
+        
+        if (field === nameInput) {
+          allowedChars = 'letters and spaces only';
+        } else if (field === commentsInput) {
+          allowedChars = 'letters, numbers, spaces, and punctuation (.,!?\'-) only';
+        }
+        
+        showMessage(errorOutput, `❌ Invalid character "${event.key}" blocked in ${fieldName} field - ${allowedChars}`, 3000);
+      }
+    }
+
+    nameInput.addEventListener('keypress', (e) => maskInput(nameInput, e));
+    commentsInput.addEventListener('keypress', (e) => maskInput(commentsInput, e));
+
+    commentsInput.addEventListener('input', () => {
+      const maxLength = parseInt(commentsInput.dataset.maxlength);
+      const currentLength = commentsInput.value.length;
+      const remaining = maxLength - currentLength;
+      
+      charCounter.textContent = `${remaining} characters remaining`;
+      charCounter.classList.remove('warning', 'error');
+      
+      if (remaining < 0) {
+        charCounter.classList.add('error');
+      } else if (remaining < 50) {
+        charCounter.classList.add('warning');
+      }
+    });
+
+    function validateField(field) {
+      const value = field.value.trim();
+      const fieldName = field.name.charAt(0).toUpperCase() + field.name.slice(1);
+      
+      if (field.required && !value) {
+        return { valid: false, message: `❌ ${fieldName} is required - please fill out this field` };
+      }
+      
+      if (field.type === 'email' && value) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(value)) {
+          return { valid: false, message: `❌ Invalid email format - please enter a valid email address (e.g., user@example.com)` };
+        }
+      }
+      
+      const pattern = field.dataset.pattern;
+      if (pattern && value && !validatePattern(field, value)) {
+        if (field === nameInput) {
+          return { valid: false, message: `❌ ${fieldName} contains invalid characters - only letters and spaces are allowed` };
+        }
+        return { valid: false, message: `❌ ${fieldName} contains invalid characters - please use only allowed characters` };
+      }
+      
+      if (field === commentsInput) {
+        const maxLength = parseInt(field.dataset.maxlength);
+        if (value.length > maxLength) {
+          return { valid: false, message: `❌ Comments exceed ${maxLength} character limit by ${value.length - maxLength} characters - please shorten your message` };
+        }
+        if (value.length < 10) {
+          return { valid: false, message: `❌ Comments must be at least 10 characters - currently ${value.length} characters (need ${10 - value.length} more)` };
+        }
+      }
+      
+      return { valid: true };
+    }
+
+    [nameInput, emailInput, commentsInput].forEach(field => {
+      field.addEventListener('blur', () => {
+        const result = validateField(field);
+        const fieldName = field.name.charAt(0).toUpperCase() + field.name.slice(1);
+        
+        if (!result.valid) {
+          field.classList.add('error');
+          field.classList.remove('valid');
+          showMessage(errorOutput, result.message, 0);
+        } else if (field.value.trim()) {
+          field.classList.remove('error');
+          field.classList.add('valid');
+          errorOutput.textContent = '';
+          
+          let infoMsg = '';
+          if (field === nameInput) {
+            infoMsg = `✓ ${fieldName} validated successfully - "${field.value}" is accepted`;
+          } else if (field === emailInput) {
+            infoMsg = `✓ ${fieldName} validated successfully - "${field.value}" is a valid email address`;
+          } else if (field === commentsInput) {
+            infoMsg = `✓ ${fieldName} validated successfully - ${field.value.length} characters (meets requirements)`;
+          }
+          
+          showMessage(infoOutput, infoMsg);
+        }
+      });
+
+      field.addEventListener('input', () => {
+        if (field.classList.contains('error')) {
+          const result = validateField(field);
+          const fieldName = field.name.charAt(0).toUpperCase() + field.name.slice(1);
+          
+          if (result.valid) {
+            field.classList.remove('error');
+            field.classList.add('valid');
+            errorOutput.textContent = '';
+            showMessage(infoOutput, `✓ ${fieldName} is now valid - error has been fixed!`);
+          }
+        }
+      });
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      formErrors.length = 0;
+      errorOutput.textContent = '';
+      infoOutput.textContent = '';
+      
+      const fields = [
+        { field: nameInput, name: 'name' },
+        { field: emailInput, name: 'email' },
+        { field: commentsInput, name: 'comments' }
+      ];
+      
+      let hasErrors = false;
+      
+      fields.forEach(({ field, name }) => {
+        const result = validateField(field);
+        
+        if (!result.valid) {
+          hasErrors = true;
+          field.classList.add('error');
+          field.classList.remove('valid');
+          
+          formErrors.push({
+            field: name,
+            error: result.message,
+            value: field.value
+          });
+        } else {
+          field.classList.remove('error');
+          field.classList.add('valid');
+        }
+      });
+      
+      formErrorsField.value = JSON.stringify(formErrors, null, 2);
+      
+      if (hasErrors) {
+        const errorFields = formErrors.map(e => e.field).join(', ');
+        showMessage(errorOutput, `❌ Form has ${formErrors.length} error(s) in: ${errorFields}. Check the form-errors field in the submission for details.`, 0);
+      } else {
+        showMessage(infoOutput, '✓ All fields validated successfully! Form is being submitted to httpbin.org...', 0);
+      }
+      
+      setTimeout(() => {
+        form.submit();
+      }, 500);
+    });
+  </script>
+</body>
+</html>
+
