@@ -41,7 +41,8 @@
     label {
       font-weight: 500;
       margin-bottom: 0.5rem;
-      color: #333;
+      color: #1f2937;
+      font-size: 1rem;
     }
 
     input,
@@ -51,17 +52,65 @@
       border-radius: 4px;
       font-size: 1rem;
       font-family: inherit;
+      transition: all 0.2s ease;
     }
 
     input:focus,
     textarea:focus {
-      outline: none;
+      outline: 3px solid #93c5fd;
+      outline-offset: 2px;
       border-color: #2563eb;
+    }
+
+    input:focus-visible,
+    textarea:focus-visible {
+      outline: 3px solid #93c5fd;
+      outline-offset: 2px;
+    }
+
+    input:placeholder-shown,
+    textarea:placeholder-shown {
+      border-color: #ddd;
+      background-color: white;
+    }
+
+    input:not(:placeholder-shown):valid,
+    textarea:not(:placeholder-shown):valid {
+      border-color: #22c55e;
+      background-color: #f0fdf4;
+    }
+
+    input:not(:placeholder-shown):invalid,
+    textarea:not(:placeholder-shown):invalid {
+      border-color: #fca5a5;
+    }
+
+    input:user-invalid,
+    textarea:user-invalid {
+      border-color: #ef4444;
+      background-color: #fef2f2;
+    }
+
+    input:user-valid,
+    textarea:user-valid {
+      border-color: #22c55e;
+      background-color: #f0fdf4;
     }
 
     textarea {
       min-height: 120px;
       resize: vertical;
+    }
+
+    .required-indicator {
+      color: #dc2626;
+      margin-left: 0.25rem;
+      font-weight: 600;
+    }
+
+    ::placeholder {
+      color: #9ca3af;
+      opacity: 1;
     }
 
     button {
@@ -73,29 +122,52 @@
       font-size: 1rem;
       font-weight: 500;
       cursor: pointer;
+      transition: all 0.2s ease;
     }
 
     button:hover {
       background: #1d4ed8;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
+    }
+
+    button:focus {
+      outline: 3px solid #93c5fd;
+      outline-offset: 2px;
+    }
+
+    button:active {
+      transform: translateY(0);
     }
 
     output {
       display: block;
-      padding: 1rem;
       border-radius: 4px;
       margin-top: 1rem;
+      min-height: 0;
+      transition: all 0.3s ease;
+    }
+
+    output:empty {
+      padding: 0;
+      margin: 0;
+      border: none;
     }
 
     #error-output:not(:empty) {
+      padding: 1rem;
       background: #fee;
       border: 1px solid #fcc;
       color: #c33;
+      font-weight: 500;
     }
 
     #info-output:not(:empty) {
+      padding: 1rem;
       background: #eff6ff;
       border: 1px solid #bfdbfe;
       color: #1e40af;
+      font-weight: 500;
     }
   </style>
 </head>
@@ -107,18 +179,37 @@
       <input type="hidden" name="possible_bot" value="true">
 
       <form-group>
-        <label for="name">Name</label>
-        <input type="text" id="name" name="name">
+        <label for="name">Name<span class="required-indicator">*</span></label>
+        <input 
+          type="text" 
+          id="name" 
+          name="name" 
+          required
+          minlength="2"
+          maxlength="50"
+          pattern="[A-Za-z\s]+"
+          placeholder="Enter your full name">
       </form-group>
 
       <form-group>
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email">
+        <label for="email">Email<span class="required-indicator">*</span></label>
+        <input 
+          type="email" 
+          id="email" 
+          name="email" 
+          required
+          placeholder="your.email@example.com">
       </form-group>
 
       <form-group>
-        <label for="comments">Comments</label>
-        <textarea id="comments" name="comments"></textarea>
+        <label for="comments">Comments<span class="required-indicator">*</span></label>
+        <textarea 
+          id="comments" 
+          name="comments" 
+          required
+          minlength="10"
+          maxlength="500"
+          placeholder="Enter your message (10-500 characters)"></textarea>
       </form-group>
 
       <button type="submit">Submit</button>
