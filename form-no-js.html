@@ -194,7 +194,7 @@
   <header style="background: linear-gradient(135deg, #2563eb, #64748b); padding: 1rem; margin-bottom: 2rem;">
     <div style="max-width: 600px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
       <h1 style="color: white; margin: 0; font-size: 1.5rem;">Contact Form</h1>
-      <button id="theme-toggle" class="theme-toggle">🌙 Dark</button>
+      <button id="theme-toggle" class="theme-toggle">🎨 Themes</button>
     </div>
   </header>
 
@@ -245,7 +245,81 @@
     </form>
   </div>
 
-  <script src="js/theme-toggle.js"></script>
+  <div id="theme-modal" class="theme-modal">
+    <div class="theme-picker">
+      <button id="close-theme-modal" class="close-btn" aria-label="Close theme picker">×</button>
+      <h2>Choose Your Theme</h2>
+      
+      <section class="preset-themes">
+        <h3>Quick Themes</h3>
+        <div class="theme-buttons">
+          <button class="preset-theme" data-theme="light">☀️ Light</button>
+          <button class="preset-theme" data-theme="dark">🌙 Dark</button>
+          <button class="preset-theme" data-theme="ocean">🌊 Ocean</button>
+          <button class="preset-theme" data-theme="forest">🌲 Forest</button>
+          <button class="preset-theme" data-theme="sunset">🌅 Sunset</button>
+        </div>
+      </section>
+
+      <section class="custom-theme">
+        <h3>Customize Your Theme</h3>
+        
+        <div class="theme-option">
+          <label for="text-color">Text Color:</label>
+          <select id="text-color">
+            <option value="very-dark">Very Dark</option>
+            <option value="dark">Dark</option>
+            <option value="medium">Medium</option>
+            <option value="light">Light</option>
+            <option value="very-light">Very Light</option>
+            <option value="white">White</option>
+          </select>
+        </div>
+
+        <div class="theme-option">
+          <label for="bg-color">Background Color:</label>
+          <select id="bg-color">
+            <option value="white">White</option>
+            <option value="very-light">Very Light</option>
+            <option value="light">Light</option>
+            <option value="light-sky">Sky Blue</option>
+            <option value="light-green">Mint</option>
+            <option value="light-orange">Warm</option>
+            <option value="medium-dark">Dark Gray</option>
+            <option value="very-dark">Very Dark</option>
+          </select>
+        </div>
+
+        <div class="theme-option">
+          <label for="accent-color">Accent Color:</label>
+          <select id="accent-color">
+            <option value="blue">Blue</option>
+            <option value="light-blue">Light Blue</option>
+            <option value="green">Green</option>
+            <option value="sky">Sky Blue</option>
+            <option value="orange">Orange</option>
+            <option value="forest">Forest Green</option>
+          </select>
+        </div>
+
+        <div class="theme-option">
+          <label for="font-picker">Font Style:</label>
+          <select id="font-picker">
+            <option value="system">Modern (Sans-serif)</option>
+            <option value="serif">Classic (Serif)</option>
+            <option value="mono">Code (Monospace)</option>
+          </select>
+        </div>
+
+        <div class="theme-actions">
+          <button id="apply-theme" class="apply-btn">Apply Custom Theme</button>
+          <button id="reset-theme" class="reset-btn">Reset to Light</button>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="js/theme-picker.js"></script>
   <script src="js/view-transitions.js"></script>
 </body>
 </html>
