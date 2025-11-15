@@ -326,7 +326,7 @@
           allowedChars = 'letters, numbers, spaces, and punctuation (.,!?\'-) only';
         }
         
-        showMessage(errorOutput, `❌ Invalid character "${event.key}" blocked in ${fieldName} field - ${allowedChars}`, 3000);
+        showMessage(infoOutput, `⚠️ Invalid character "${event.key}" blocked in ${fieldName} field - ${allowedChars}`, 3000);
       }
     }
 
