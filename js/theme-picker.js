@@ -52,6 +52,7 @@ function getCurrentTheme() {
 }
 
 function applyTheme(theme) {
+  // Portfolio pages variables
   document.documentElement.style.setProperty('--text-color', theme.textColor);
   document.documentElement.style.setProperty('--background-color', theme.bgColor);
   document.documentElement.style.setProperty('--primary-color', theme.accentColor);
@@ -87,6 +88,11 @@ function applyTheme(theme) {
   const accentFallback = adjustColorBrightness(theme.accentColor, isLightBg ? -0.1 : 0.1);
   document.documentElement.style.setProperty('--accent-color', theme.accentColor);
   document.documentElement.style.setProperty('--primary-color-fallback', accentFallback);
+  
+  // Form pages variables (form-no-js.html and form-with-js.html)
+  document.documentElement.style.setProperty('--bg-color', bgColor);
+  document.documentElement.style.setProperty('--container-bg', fallbackBg);
+  document.documentElement.style.setProperty('--focus-color', theme.accentColor);
 }
 
 function adjustColorBrightness(hex, percent) {
